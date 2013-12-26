@@ -10,6 +10,9 @@
 #include <iostream>
 #include <fstream>
 
+/* Projet classes */
+#include "MeshSimplification/edgeCollapse.hpp"
+
 /* If you do not want to use a viewer, you can comment the following file. */
 #include "linear_cell_complex_3_viewer_qt.h"
 
@@ -114,11 +117,21 @@ int main(int narg, char** argv)
   lcc.display_characteristics(std::cout) << ", valid=" 
                                          << lcc.is_valid() << std::endl;
 
+  int nbVerticesOutput = 1000;
+  EdgeCollapse* edgeCollapser = new EdgeCollapse( &lcc, nbVerticesOutput );
+  edgeCollapser->collapseEdges();
+
   /* If you do not want to use a viewer, you can comment the following file. */
   display_lcc(lcc);
 
   // Print the corresponding off to stdout
-  write_off(lcc, std::cout);
+  std::ofstream ofs("output.off");
+  if ( ofs.fail() )
+  {
+    std::cout<<"Error : impossible to open file "<<"output.off"<<std::endl;
+    return EXIT_FAILURE;
+  }
+  write_off(lcc, ofs);
   
   return EXIT_SUCCESS;
 }

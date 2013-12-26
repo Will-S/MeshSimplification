@@ -19,14 +19,22 @@ set(CGAL_SRC_FILES CGAL/assertions.cpp CGAL/io.cpp CGAL/Timer.cpp
 
 # To use valgrind, we must disable rounding math ckeck.
 # add_definition(-DCGAL_DISABLE_ROUNDING_MATH_CHECK)
+# add_definition(-std=c++11)
 
 include_directories(.)
 include("CMakeLCCViewerQt.inc")
 
+# Project classes
+set(PROJECT_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/MeshSimplification/edgeCollapse.hpp
+                    ${CMAKE_CURRENT_SOURCE_DIR}/MeshSimplification/edgeCollapse.cpp
+                    ${CMAKE_CURRENT_SOURCE_DIR}/MeshSimplification/edgeSelection.hpp
+                    ${CMAKE_CURRENT_SOURCE_DIR}/MeshSimplification/edgeSelection.cpp )
+
 # In the next line, add all the source files.
-add_executable(load_off load_off.cpp ${CGAL_SRC_FILES})
+add_executable(load_off load_off.cpp ${CGAL_SRC_FILES} ${PROJECT_SOURCES})
 target_link_libraries(load_off ${MAP_VIEWER_LIBRARIES})
 
-add_executable(load_tetmesh load_tetmesh.cpp ${CGAL_SRC_FILES})
-target_link_libraries(load_tetmesh ${MAP_VIEWER_LIBRARIES})
+# for volume meshes
+#add_executable(load_tetmesh load_tetmesh.cpp ${CGAL_SRC_FILES})
+#target_link_libraries(load_tetmesh ${MAP_VIEWER_LIBRARIES})
 
