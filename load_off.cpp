@@ -117,15 +117,15 @@ int main(int narg, char** argv)
   lcc.display_characteristics(std::cout) << ", valid=" 
                                          << lcc.is_valid() << std::endl;
 
-  int nbVerticesOutput = 1000;
-  EdgeCollapse* edgeCollapser = new EdgeCollapse( &lcc, nbVerticesOutput );
-  edgeCollapser->collapseEdges();
+  EdgeCollapse* edgeCollapser = new EdgeCollapse( &lcc );
+  int collapseRate = 10; // percentage of edges to remove
+  edgeCollapser->collapseEdges( collapseRate );
 
   /* If you do not want to use a viewer, you can comment the following file. */
-  display_lcc(lcc);
+  //display_lcc(lcc);
 
   // Print the corresponding off to stdout
-  std::ofstream ofs("output.off");
+  std::ofstream ofs("output_pig.off");
   if ( ofs.fail() )
   {
     std::cout<<"Error : impossible to open file "<<"output.off"<<std::endl;

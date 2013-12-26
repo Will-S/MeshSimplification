@@ -16,13 +16,12 @@ typedef CGAL::Linear_cell_complex<2, 3, Traits>     LCC_3;
 class EdgeCollapse
 {
 public:
-  EdgeCollapse( LCC_3* lcc, int nbVertices );
+  EdgeCollapse( LCC_3* lcc );
   ~EdgeCollapse();
-  void collapseEdges();
+  void collapseEdges(int collapseRate);
   
 private:
   LCC_3* m_lcc;
-  int m_nbVertices;
   EdgeSelection* m_edgeSelector;
 };
 
