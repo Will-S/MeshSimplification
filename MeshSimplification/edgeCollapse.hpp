@@ -10,6 +10,7 @@
 typedef CGAL::Cartesian<double>                     Kernel;
 typedef CGAL::Linear_cell_complex_traits<3, Kernel> Traits;
 typedef CGAL::Linear_cell_complex<2, 3, Traits>     LCC_3;
+typedef LCC_3::Dart_handle Dart_handle;
 
 #include "edgeSelection.hpp"
 

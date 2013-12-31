@@ -121,8 +121,11 @@ int main(int narg, char** argv)
   int collapseRate = 10; // percentage of edges to remove
   edgeCollapser->collapseEdges( collapseRate );
 
+  lcc.display_characteristics(std::cout) << ", valid="
+                                         << lcc.is_valid() << std::endl;
+
   /* If you do not want to use a viewer, you can comment the following file. */
-  //display_lcc(lcc);
+  display_lcc(lcc);
 
   // Print the corresponding off to stdout
   std::ofstream ofs("output_pig.off");
