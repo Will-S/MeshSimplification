@@ -27,9 +27,52 @@ void removeEdge( LCC_3* lcc, unsigned int mark )
     ++nb;
     if (lcc->is_marked (it, mark))
     {
-      lcc->unmark(it, mark);
       // Add Barycenter
-      lcc->insert_barycenter_in_cell<1>(it);
+      LCC_3::Dart_handle barycenter_dh = lcc->insert_barycenter_in_cell<1>(it);
+      LCC_3::Point barycenter_point = LCC_3::point(barycenter_dh);
+
+      Dart_handle dhA = barycenter_dh->beta(1);
+
+      //Add darts linking barycenter
+     for  (LCC_3::Dart_of_cell_range<0>::iterator
+                itA(lcc->darts_of_cell<0>(dhA).begin()),
+                itAend(lcc->darts_of_cell<0>(dhA).end()); itA!=itAend; ++itA)
+     {
+         if(LCC_3::point(itA->beta(1))==LCC_3::point(it))
+             continue;
+         else
+         {
+             lcc->insert_dangling_cell_1_in_cell_2(barycenter_dh,LCC_3::point(itA->beta(1)));
+             /*if(itA->beta(2)!=NULL)
+             {
+                 CGAL::remove_cell<LCC_3,1>(*lcc,itA->beta(2));
+                 CGAL::remove_cell<LCC_3,1>(*lcc,itA);
+             }
+             else
+                 CGAL::remove_cell<LCC_3,1>(*lcc,itA);*/
+         }
+     }
+
+     for  (LCC_3::Dart_of_cell_range<0>::iterator
+                itB(lcc->darts_of_cell<0>(it).begin()),
+                itBend(lcc->darts_of_cell<0>(it).end()); itB!=itBend; ++itB)
+     {
+         if(LCC_3::point(itB->beta(1))==LCC_3::point(dhA))
+             continue;
+         else
+         {
+             lcc->insert_dangling_cell_1_in_cell_2(barycenter_dh,LCC_3::point(itB->beta(1)));
+             /*if(itB->beta(2)!=NULL)
+             {
+                 CGAL::remove_cell<LCC_3,1>(*lcc,itB->beta(2));
+                 CGAL::remove_cell<LCC_3,1>(*lcc,itB);
+             }
+             else
+                 CGAL::remove_cell<LCC_3,1>(*lcc,itB);*/
+         }
+     }
+      // Unmark dart
+      lcc->unmark(it, mark);
     }
   }
   CGAL_assertion (lcc->is_whole_map_unmarked (mark));
